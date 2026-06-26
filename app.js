@@ -115,11 +115,10 @@ function ghPush(message){
 
 async function ghFetchFile(){
   const token = getGhToken();
-  if(!token) return null;
   const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_DATA_PATH}?ref=${GH_BRANCH}`;
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
-  });
+  const headers = { Accept: "application/vnd.github+json" };
+  if(token) headers.Authorization = `Bearer ${token}`; // 토큰 있으면 사용(레이트리밋 상향), 없어도 공개 repo라 읽기는 가능
+  const res = await fetch(url, { headers });
   if(res.status === 404){ ghFileSha = null; return null; } // 파일이 아직 없음
   if(!res.ok){
     const body = await res.json().catch(()=>({}));
@@ -166,8 +165,6 @@ async function ghSaveFile(dataObj, message){
 
 // 원격에서 불러와서 로컬과 합친 뒤 화면에 반영 (저장은 하지 않음 — 읽기 전용 동기화)
 async function ghPull(){
-  const token = getGhToken();
-  if(!token){ ghSyncState.status = "idle"; return; }
   ghSyncState.status = "loading";
   render();
   try{
@@ -189,7 +186,10 @@ async function ghPull(){
 // 로컬 변경사항을 원격에 반영 (충돌 시 한번 재시도)
 async function ghPushNow(message, retryCount){
   const token = getGhToken();
-  if(!token) return; // 토큰 없으면 그냥 localStorage만 사용 (조용히 패스)
+  if(!token){
+    showToast("👀 보기 전용 모드예요. 이 변경은 내 화면에만 남고 공유되지 않아요 — 상단에서 등록하면 모두와 공유돼요");
+    return;
+  }
   retryCount = retryCount || 0;
   ghSyncState.status = "saving";
   render();
@@ -907,7 +907,7 @@ function renderHeader(){
   const hasToken = !!getGhToken();
   let syncBadge;
   if(!hasToken){
-    syncBadge = `<button onclick="openGhTokenModal()" style="font-size:11.5px; font-weight:700; color:var(--coral-deep); background:var(--coral-pale); border:none; padding:4px 11px; border-radius:20px; margin-top:2px;">🔗 공유 저장 연결 안 됨 — 등록하기</button>`;
+    syncBadge = `<button onclick="openGhTokenModal()" style="font-size:11.5px; font-weight:700; color:var(--coral-deep); background:var(--coral-pale); border:none; padding:4px 11px; border-radius:20px; margin-top:2px;">👀 보기 전용 — 직접 체크하려면 등록하기</button>`;
   } else if(ghSyncState.status === 'saving'){
     syncBadge = `<span style="font-size:11.5px; font-weight:600; color:var(--ink-faint);">💾 저장 중…</span>`;
   } else if(ghSyncState.status === 'loading'){
