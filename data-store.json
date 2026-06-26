@@ -1,6 +1,10 @@
 {
   "progress": {
-    "longform": {},
+    "longform": {
+      "16": {
+        "image": false
+      }
+    },
     "shorts": {
       "2": {
         "planner": true,
