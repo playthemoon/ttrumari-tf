@@ -104,13 +104,13 @@ function mergeSyncState(remote, local){
 let __ghPushTimer = null;
 let __ghPushPending = null;
 function ghPush(message){
-  // 짧은 시간 내 여러 변경(연타)을 하나로 묶어서 보냄
+  // 디바운스 없이 즉시 전송 (단, 짧은 연타는 마지막 메시지로 합쳐 보냄)
   __ghPushPending = message;
   if(__ghPushTimer) clearTimeout(__ghPushTimer);
   __ghPushTimer = setTimeout(()=>{
     __ghPushTimer = null;
     ghPushNow(__ghPushPending);
-  }, 600);
+  }, 150);
 }
 
 async function ghFetchFile(){
@@ -209,6 +209,7 @@ async function ghPushNow(message, retryCount){
     }
     ghSyncState.status = "error";
     ghSyncState.lastError = e.message;
+    showToast(`⚠️ 공유 저장 실패: ${e.message}`);
   }
   render();
 }
