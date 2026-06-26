@@ -1,0 +1,42 @@
+{
+  "progress": {
+    "longform": {},
+    "shorts": {
+      "2": {
+        "planner": true,
+        "video": true
+      },
+      "3": {
+        "planner": true,
+        "video": true
+      }
+    },
+    "sbStages": {}
+  },
+  "sbLocal": {},
+  "videoUrls": {
+    "shorts-2": "https://www.youtube.com/shorts/9-6ohGriaNM",
+    "shorts-3": "https://www.youtube.com/shorts/PYW9kKNyl8w",
+    "shorts-1": "https://www.youtube.com/shorts/ef6SqKUp0jc",
+    "longform-1": "https://www.youtube.com/watch?v=XGFyNd-XrOQ",
+    "longform-2": "https://www.youtube.com/watch?v=xWIbwjbe7IU",
+    "longform-3": "https://www.youtube.com/watch?v=r80i_WkXz3Q",
+    "longform-4": "https://www.youtube.com/watch?v=w1aaeXlNLHQ",
+    "longform-5": "https://www.youtube.com/watch?v=8nLgh9NM3XI",
+    "longform-6": "https://www.youtube.com/watch?v=h4l8s2E1LVY",
+    "longform-7": "https://www.youtube.com/watch?v=krqV4vYQyvo"
+  },
+  "ops": {},
+  "epOverrides": {
+    "shorts-2": {
+      "title": "야르송",
+      "planner": "최형준",
+      "video": "최형준"
+    },
+    "shorts-3": {
+      "title": "니가 좋아 뚜맘 리즈시절",
+      "planner": "최형준",
+      "video": "최형준"
+    }
+  }
+}
